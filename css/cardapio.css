@@ -17,22 +17,16 @@
 /*teste de modificacao*/
 
 body{
-    background-color: whitesmoke; 
+    background-image: url(/img/fundosite.jpg); 
+    
 }
 
 .linha {
     width: 100%;
-    height: 6px;
+    height: 4px;
     background: #e3f703;
-    margin-top: 1px;
+}
 
-}
-.menu{
-    
-    width: 100%;
-    position:fixed;
-    margin-top: -12px;
-}
 /*cabeçalho do cardapio*/
 .header{
     width: 100%;
