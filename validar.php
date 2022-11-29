@@ -1,27 +1,32 @@
 <?php
+require_once("conexao.php");
 session_start();
-include('conexao.php');
- 
-if(empty($_POST['cpf']) || empty($_POST['senha'])) {
-	header('Location: index.php');
-	exit();
-}
- 
-$usuario = mysqli_real_escape_string($conexao, $_POST['cpf']);
-$senha = mysqli_real_escape_string($conexao, $_POST['senha']);
- 
-$query = "select clientes from clientes where clientes = '{$usuario}' and senha = md5('{$senha}')";
- 
-$result = mysqli_query($conexao, $query);
- 
-$row = mysqli_num_rows($result);
- 
-if($row == 1) {
-	$_SESSION['nome'] = $usuario;
-	header('Location: painel.php');
-	exit();
-} else {
-	$_SESSION['nao_autenticado'] = true;
-	header('Location: index.php');
-	exit();
+
+$cpf       = $_POST['cpf'];
+$senha     = $_POST['senha'];
+$pwdMD5    = md5($senha);
+$btn_cad   = $_POST['submit'];
+
+$query = "SELECT * FROM client WHERE CPF = '$cpf' AND SENHA = '$pwdMD5'";
+$result = mysqli_query($conn, $query) or die("ERRO AO SELECIONAR DADOS");
+$row = mysqli_fetch_assoc($result);
+
+//echo $row['CPF'];
+
+if (!empty($btn_cad) && !empty($cpf) && !empty($senha)) {
+
+	if (mysqli_num_rows($result)<=0){
+        $_SESSION['msg'] = "<div style='text-align:center''>CPF OU SENHA NĀO CONFEREM</div>";
+		header('location: login.php');
+      }else{
+
+        $_SESSION['id'] = $row['ID'];
+		$_SESSION['nome'] = $row['NOME'];
+		header('location: cardapio.php');
+
+      }	
+
+}else{
+	$_SESSION['msg'] = "<div style='text-align:center'>ENTRE COM SEUS DADOS</div>";
+	header('location: login.php');
 }

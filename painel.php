@@ -1,6 +1,9 @@
 <?php
 session_start();
-include('verifica_login.php');
+
+if (!$_SESSION['id'] && !$_SESSION['nome'])
+  header('location: login.php');
+
 ?>
 
 <h2>Olá, <?php echo $_SESSION['nome'];?></h2>
